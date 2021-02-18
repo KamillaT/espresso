@@ -10,21 +10,20 @@ class DBSample(QMainWindow):
     def __init__(self):
         super().__init__()
         uic.loadUi('main.ui', self)
-        self.connection = sqlite3.connect("coffee.sqlite")
+        self.con = sqlite3.connect("coffee.sqlite")
         self.pushButton.clicked.connect(self.view_data)
 
     def view_data(self):
-        res = self.connection.cursor().execute("""SELECT * FROM coffee""").fetchall()
-        self.tableWidget.setColumnCount(7)
-        self.tableWidget.setRowCount(0)
-        for i, row in enumerate(res):
-            self.tableWidget.setRowCount(
-                self.tableWidget.rowCount() + 1)
-            for j, elem in enumerate(row):
-                i, j, QTableWidgetItem(str(elem))
+        cur = self.con.cursor()
+        que = "SELECT * FROM coffee"
+        result = cur.execute(que).fetchall()
 
-    def closeEvent(self, event):
-        self.connection.close()
+        self.tableWidget.setRowCount(len(result))
+        self.tableWidget.setColumnCount(len(result[0]))
+
+        for i, elem in enumerate(result):
+            for j, val in enumerate(elem):
+                self.tableWidget.setItem(i, j, QTableWidgetItem(str(val)))
 
 
 if __name__ == '__main__':
