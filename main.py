@@ -20,10 +20,13 @@ class DBSample(QMainWindow):
 
         self.tableWidget.setRowCount(len(result))
         self.tableWidget.setColumnCount(len(result[0]))
+        self.tableWidget.setHorizontalHeaderLabels(['ID', 'название сорта', 'степень обжарки', 'молотый/в зёрнах',
+                                                    'вкус', 'цена (руб.)', 'объём упаковки (г)'])
 
         for i, elem in enumerate(result):
             for j, val in enumerate(elem):
                 self.tableWidget.setItem(i, j, QTableWidgetItem(str(val)))
+        self.tableWidget.resizeColumnsToContents()
 
 
 if __name__ == '__main__':
